@@ -1,15 +1,19 @@
-# eth-peers-list-builder
+# parity-exporter
+Very simple prometheus exporter for Parity.
 
-This resource uses www.ethernodes.org to prepare a list of working,
-synchronized ethereum peers, which is needed to speed up the synchronization of 
-an Ethereum node immediately after starting.
+The main motivation is not to use ready-made solutions, since their build methods (with the indication of dependencies from GIT) are not safe.
+The current mini-exporter is as simple as possible and only uses `requests` as JsonRPC clients, which minimizes security risks.
+This code can be forked, reviewed and added to build containers from your repository, which will give the necessary level of peace of mind in order to give it access to your private RPCs.
+
+Provided metrics for:
+
+* `eth_block_number`: The number of most recent block.
+* `net_peers`: The number of peers currently connected to the client
+* `parity_net_active_peers`: The number of active peers
+* `parity_net_connected_peers`: The number of peers currently connected to the client
 
 ## Env config variables
 
-* `PEERS_FILE_PATH` - indicates where the resulting file will be located
-
-## Geth command start
-
-Please add this command to geth start script:
-
-    cat /tmp/geth-nodes-list-builder/peers.txt | while read peer; do geth attach --exec "admin.addPeer('$peer')"; done
+* `RPC_ADDRESS` - JsonRPC Parity address
+* `EXPORTER_PORT` - Prometheus exporter port
+* `RUN_INTERVAL` - JsonRPC call interval
