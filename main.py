@@ -2,7 +2,7 @@
 import time
 import logging
 from prometheus_client import start_http_server, Summary
-from settings import EXPORTER_PORT, RPC_ADDRESS, RUN_INTERVAL
+from settings import EXPORTER_PORT, RPC_ADDRESS, RUN_INTERVAL, WAIT_BEFORE_START
 from exporter import update_metrics
 from parity import Parity
 
@@ -12,6 +12,8 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     p = Parity(RPC_ADDRESS)
     start_http_server(EXPORTER_PORT)
+
+    time.sleep(WAIT_BEFORE_START)
     while True:
         update_metrics(p)
         time.sleep(RUN_INTERVAL)
